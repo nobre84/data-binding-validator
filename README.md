@@ -8,7 +8,7 @@ The Data Binding Validator makes it easy and quick to validate fields in forms u
 
 Step 1: Add it in your root build.gradle at the end of repositories:
 
-```
+``` groovy
 allprojects {
   repositories {
     ...
@@ -18,7 +18,7 @@ allprojects {
 ```
 
 Step 2: Add the dependency
-```
+``` groovy
   dependencies {
     compile 'com.github.Ilhasoft:data-binding-validator:LATEST-VERSION'
   }
@@ -45,7 +45,7 @@ Latest Version: [![Latest version](https://jitpack.io/v/Ilhasoft/data-binding-va
 
 You need to enable Data Binding to use this library, add the following code into your main module's `build.gradle`:
 
-```
+``` groovy
 android {
     ....
     dataBinding {
@@ -62,7 +62,7 @@ It's possible to insert directly on layout creation, the validation on input fie
 
 Adding `validateMinLength` or `validateMaxLength` to your `EditText`, it's possible to configure a minimum or maximum characters length:
 
-```
+``` xml
 <EditText
   android:id="@+id/name"
   android:layout_width="match_parent"
@@ -76,7 +76,7 @@ Adding `validateMinLength` or `validateMaxLength` to your `EditText`, it's possi
 
 Adding `validateEmpty`, you can validate if the `EditText` is empty:
 
-```
+``` xml
 <EditText
   android:id="@+id/hello"
   android:layout_width="match_parent"
@@ -89,7 +89,7 @@ Adding `validateEmpty`, you can validate if the `EditText` is empty:
 
 Adding `validateDate`, you can set a pattern accepted by the `EditText` such as `dd/MM/yyyy`, `yyyy` and so on:
 
-```
+``` xml
 <EditText
   android:id="@+id/date"
   android:layout_width="match_parent"
@@ -102,7 +102,7 @@ Adding `validateDate`, you can set a pattern accepted by the `EditText` such as 
 
 Adding `validateRegex`, you can set a regular expression to be validated, for example:
 
-```
+``` xml
 <EditText
   android:id="@+id/regex"
   android:layout_width="match_parent"
@@ -116,7 +116,7 @@ Adding `validateRegex`, you can set a regular expression to be validated, for ex
 
 You can even validate input by date, for example Email, URL, Username, CreditCard, CPF, CEP and so on:
 
-```
+``` xml
 <EditText app:validateType='@{"email"}' />
 
 <EditText app:validateType='@{"url"}' />
@@ -132,7 +132,7 @@ You can even validate input by date, for example Email, URL, Username, CreditCar
 
 Adding `validateCustom`, you can set a public static function do validation, for example:
 
-```
+``` xml
 <EditText
   android:id="@+id/password"
   android:layout_width="match_parent"
@@ -140,8 +140,10 @@ Adding `validateCustom`, you can set a public static function do validation, for
   app:validateCustom='@{"br.com.ilhasoft.support.validation.sample.MainActivity.validatePassword"}'
   app:validateCustomMessage="@{@string/custom_error_password_description}"
   />
+```
 
-// in MainActivity:
+in MainActivity:
+``` java
 public static boolean validatePassword(String password){
     return password.matches(".*[a-z].*") &&
            password.matches(".*[A-Z].*") &&
@@ -153,7 +155,7 @@ public static boolean validatePassword(String password){
 
 It will be necessary to instantiate `Validator` passing as argument your `ViewDataBinding` instance got from your layout binding. After that you can call `validate()` that will return if your data is valid or not. Example:
 
-```
+``` java
 @Override
 protected void onCreate(Bundle savedInstanceState) {
   super.onCreate(savedInstanceState);
@@ -174,7 +176,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 Or you can use `toValidate()` if prefer using listener to validation response:
 
-```
+``` java
 public class YourActivity extends AppCompatActivity implements Validator.ValidationListener {
 
     ...
@@ -211,7 +213,7 @@ public class YourActivity extends AppCompatActivity implements Validator.Validat
 
 You can add custom error messages by using the same validation rule name and adding `Message` at the end, such as `validateTypeMessage`, `validateDateMessage`, `validateRegexMessage` and so on. For example:
 
-```
+``` xml
 <EditText
   android:id="@+id/date"
   android:layout_width="match_parent"
@@ -235,7 +237,7 @@ If you want to come back to the default way, call `validator.enableFieldValidati
 
 By default, the library prompts error messages and doens't dismiss the error automatically, however, you can add on your layout validation the same rule name by adding `AutoDismiss` at the end, which receives a `boolean`. In this case it could dismiss the error automatically. For example:
 
-```
+``` xml
 <EditText
   android:id="@+id/date"
   android:layout_width="match_parent"
@@ -249,7 +251,7 @@ By default, the library prompts error messages and doens't dismiss the error aut
 ### Hiding validation messages ###
 
 If you want to check if fields are valid but not have the EditText's error message set, add an attribute:  
-```
+``` xml
 app:showErrorMessage='@{false}'
 ```  
 This is useful if you're validating as the user types to enable a button - showing an error after the user has only typed one character is not an ideal user experience. You can use the databinding expression to show the message according to your requirements, such as after onFocusChanged when the user navigates out of the field.
@@ -258,7 +260,7 @@ This is useful if you're validating as the user types to enable a button - showi
 
 To validate as the user types, use addTextChangedListener. For example:
 
-```
+``` java
 binding.password.addTextChangedListener(new TextWatcher() {
     @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
     @Override public void onTextChanged(CharSequence s, int start, int before, int count) { }
